@@ -11,15 +11,3 @@ new Vue({
 	vuetify,
 	render: h => h(App)
 }).$mount('#app');
-
-// let app;
-// firebase.auth().onAuthStateChanged(function(user) {
-// 	if (!app) {
-// 		app = new Vue({
-// 			el: '#app',
-// 			router,
-// 			template: '<App/>',
-// 			components: { App }
-// 		});
-// 	}
-// });
