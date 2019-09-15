@@ -1,131 +1,133 @@
 <template>
     <div>
-        <v-row v-if="!isLoggedIn">
-            <v-col cols="12">
-                <h1 class="text-center display-1 mb-10">Добро пожаловать в MyMoney</h1>
+        <div v-if="!isLoggedIn" class="custom-background">
+            <div class="custom-background__inner">
+                <h1 class="text-center display-1 mb-10">Добро пожаловать в MyMoney!</h1>
 
                 <p class="custom-description">
                     Данный сервис поможет Вам в управлении личными финансами. Записывайте свои доходы
                     и расходы, распределяя их по категориям, а MyMoney наглядным образом визуализирует все данные,
                     чтобы вы хорошо понимали своё финансовое положение.
                 </p>
-            </v-col>
-        </v-row>
+            </div>
+        </div>
 
-        <v-row v-if="isLoggedIn">
-            <v-col cols="12">
-                <p class="headline text-center grey--text">
-                    Текущий месяц:
-                    <span
-                            :class="{
+        <v-container v-if="isLoggedIn">
+            <v-row>
+                <v-col cols="12">
+                    <p class="headline text-center grey--text">
+                        Текущий месяц:
+                        <span
+                                :class="{
                             'grey--text': incomeSum === outcomeSum,
                             'green--text': incomeSum > outcomeSum,
                             'red--text': outcomeSum > incomeSum
                         }"
-                    >
+                        >
                     <span v-show="incomeSum > outcomeSum">+</span>{{incomeSum - outcomeSum}} руб.
                 </span>
-                </p>
-            </v-col>
+                    </p>
+                </v-col>
 
-            <v-col cols="6">
-                <h2 class="title text-center grey--text">Доходы</h2>
+                <v-col cols="6">
+                    <h2 class="title text-center grey--text">Доходы</h2>
 
-                <Form
-                        :onSubmit="onSubmitIncome"
-                        nameLabel="Я получил"
-                        valueLabel="В размере"
-                        :categories="incomeCategories"
-                />
+                    <Form
+                            :onSubmit="onSubmitIncome"
+                            nameLabel="Я получил"
+                            valueLabel="В размере"
+                            :categories="incomeCategories"
+                    />
 
-                <p class="grey--text custom-month-panel">
-                    За текущий месяц вы заработали:
-                    <span class="green--text ml-1">+{{incomeSum}} руб.</span>
+                    <p class="grey--text custom-month-panel">
+                        За текущий месяц вы заработали:
+                        <span class="green--text ml-1">+{{incomeSum}} руб.</span>
 
-                    <v-btn
-                            class="custom-month-panel__btn"
-                            text
-                            icon
-                            v-show="!isIncomeChartShown"
-                            @click="isIncomeChartShown = true"
-                    >
-                        <v-icon>mdi-chevron-down</v-icon>
-                    </v-btn>
+                        <v-btn
+                                class="custom-month-panel__btn"
+                                text
+                                icon
+                                v-show="!isIncomeChartShown"
+                                @click="isIncomeChartShown = true"
+                        >
+                            <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
 
-                    <v-btn
-                            class="custom-month-panel__btn"
-                            text
-                            icon
-                            v-show="isIncomeChartShown"
-                            @click="isIncomeChartShown = false"
-                    >
-                        <v-icon>mdi-chevron-up</v-icon>
-                    </v-btn>
-                </p>
+                        <v-btn
+                                class="custom-month-panel__btn"
+                                text
+                                icon
+                                v-show="isIncomeChartShown"
+                                @click="isIncomeChartShown = false"
+                        >
+                            <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                    </p>
 
-                <div class="mb-4 custom-chart" v-if="isIncomeChartShown">
-                    <Pie :chartData="incomeChartData"/>
-                </div>
+                    <div class="mb-4 custom-chart" v-if="isIncomeChartShown">
+                        <Pie :chartData="incomeChartData"/>
+                    </div>
 
-                <Item
-                        v-for="item in income"
-                        :key="item.id"
-                        valuePrefix="+"
-                        valueColor="green"
-                        :item="item"
-                        :onRemove="onRemoveIncome"
-                />
-            </v-col>
+                    <Item
+                            v-for="item in income"
+                            :key="item.id"
+                            valuePrefix="+"
+                            valueColor="green"
+                            :item="item"
+                            :onRemove="onRemoveIncome"
+                    />
+                </v-col>
 
-            <v-col cols="6">
-                <h2 class="title text-center grey--text">Расходы</h2>
+                <v-col cols="6">
+                    <h2 class="title text-center grey--text">Расходы</h2>
 
-                <Form
-                        :onSubmit="onSubmitOutcome"
-                        nameLabel="Я приобрёл"
-                        valueLabel="Потратил"
-                        :categories="outcomeCategories"
-                />
+                    <Form
+                            :onSubmit="onSubmitOutcome"
+                            nameLabel="Я приобрёл"
+                            valueLabel="Потратил"
+                            :categories="outcomeCategories"
+                    />
 
-                <p class="grey--text custom-month-panel">
-                    За текущий месяц вы потратили:
-                    <span class="red--text ml-1">-{{outcomeSum}} руб.</span>
+                    <p class="grey--text custom-month-panel">
+                        За текущий месяц вы потратили:
+                        <span class="red--text ml-1">-{{outcomeSum}} руб.</span>
 
-                    <v-btn
-                            class="custom-month-panel__btn"
-                            text
-                            icon
-                            v-show="!isOutcomeChartShown"
-                            @click="isOutcomeChartShown = true"
-                    >
-                        <v-icon>mdi-chevron-down</v-icon>
-                    </v-btn>
+                        <v-btn
+                                class="custom-month-panel__btn"
+                                text
+                                icon
+                                v-show="!isOutcomeChartShown"
+                                @click="isOutcomeChartShown = true"
+                        >
+                            <v-icon>mdi-chevron-down</v-icon>
+                        </v-btn>
 
-                    <v-btn
-                            class="custom-month-panel__btn"
-                            text
-                            icon
-                            v-show="isOutcomeChartShown"
-                            @click="isOutcomeChartShown = false"
-                    >
-                        <v-icon>mdi-chevron-up</v-icon>
-                    </v-btn>
-                </p>
+                        <v-btn
+                                class="custom-month-panel__btn"
+                                text
+                                icon
+                                v-show="isOutcomeChartShown"
+                                @click="isOutcomeChartShown = false"
+                        >
+                            <v-icon>mdi-chevron-up</v-icon>
+                        </v-btn>
+                    </p>
 
-                <div class="mb-4 custom-chart" v-if="isOutcomeChartShown">
-                    <Pie :chartData="outcomeChartData"/>
-                </div>
+                    <div class="mb-4 custom-chart" v-if="isOutcomeChartShown">
+                        <Pie :chartData="outcomeChartData"/>
+                    </div>
 
-                <Item
-                        v-for="item in outcome"
-                        :key="item.id"
-                        valuePrefix="-"
-                        valueColor="red"
-                        :item="item"
-                        :onRemove="onRemoveOutcome"
-                />
-            </v-col>
-        </v-row>
+                    <Item
+                            v-for="item in outcome"
+                            :key="item.id"
+                            valuePrefix="-"
+                            valueColor="red"
+                            :item="item"
+                            :onRemove="onRemoveOutcome"
+                    />
+                </v-col>
+            </v-row>
+        </v-container>
     </div>
 </template>
 
@@ -332,6 +334,28 @@
 </script>
 
 <style>
+    .custom-background {
+        display: flex;
+        align-items: flex-start;
+        height: 100vh;
+        margin-top: -56px;
+        padding-top: 56px;
+
+        background-image: url(../assets/background.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .custom-background__inner {
+        max-width: 700px;
+        padding: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 100px;
+
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+
     .custom-description {
         max-width: 600px;
         margin-left: auto;
@@ -351,5 +375,12 @@
     .custom-month-panel__btn {
         margin-left: auto;
         margin-top: -6px;
+    }
+
+    @media screen and (min-width: 960px) {
+        .custom-background {
+            margin-top: -64px;
+            padding-top: 64px;
+        }
     }
 </style>

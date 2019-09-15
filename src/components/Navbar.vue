@@ -1,7 +1,7 @@
 <template>
     <nav>
-        <v-app-bar flat app>
-            <v-toolbar-title class="">
+        <v-app-bar flat app class="yellow lighten-1">
+            <v-toolbar-title>
                 MyMoney
             </v-toolbar-title>
 
@@ -9,7 +9,7 @@
 
             <v-dialog v-if="!isLoggedIn" v-model="isDialogOpen" width="300">
                 <template v-slot:activator="{ on }">
-                    <v-btn text color="grey" v-on="on">
+                    <v-btn text v-on="on">
                         Войти
                         <v-icon right>mdi-exit-to-app</v-icon>
                     </v-btn>
@@ -77,11 +77,9 @@
             </v-dialog>
 
             <div v-if="isLoggedIn">
-                <span class="grey--text">
-                    {{this.userEmail}}
-                </span>
+                {{this.userEmail}}
 
-                <v-btn text color="grey" @click="logoutClickHandler">
+                <v-btn text @click="logoutClickHandler">
                     Выйти
                     <v-icon right>mdi-logout-variant</v-icon>
                 </v-btn>
