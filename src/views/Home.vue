@@ -263,10 +263,11 @@
 		},
         created() {
 			firebase.auth().onAuthStateChanged((user) => {
-				this.userID = user.uid;
 				this.isLoggedIn = !!user;
 
-				if (this.userID) {
+				if (user) {
+					this.userID = user.uid;
+
 					db.collection(`users/${this.userID}/incomes`).onSnapshot((res) => {
 						const changes = res.docChanges();
 

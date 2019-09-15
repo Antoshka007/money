@@ -152,8 +152,11 @@
         },
         created() {
 			firebase.auth().onAuthStateChanged((user) => {
-				this.userEmail = user.email;
-                this.isLoggedIn = !!user;
+				this.isLoggedIn = !!user;
+
+				if (user) {
+					this.userEmail = user.email;
+                }
 			});
         }
     };
