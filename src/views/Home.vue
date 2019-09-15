@@ -321,6 +321,10 @@
 							}
 						});
 					});
+                } else {
+					this.income = [];
+					this.outcome = [];
+					this.userID = null;
                 }
 			});
         }

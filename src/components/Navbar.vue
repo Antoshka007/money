@@ -156,6 +156,8 @@
 
 				if (user) {
 					this.userEmail = user.email;
+                } else {
+					this.userEmail = null;
                 }
 			});
         }
