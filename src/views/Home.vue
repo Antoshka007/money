@@ -15,7 +15,7 @@
         <v-container v-if="isLoggedIn">
             <v-row>
                 <v-col cols="12">
-                    <p class="headline text-center blue-grey--text text--darken-2">
+                    <p class="headline text-center blue-grey--text text--darken-2 mt-10">
                         Текущий месяц:
                         <span
                                 :class="{
