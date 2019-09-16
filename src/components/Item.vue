@@ -9,8 +9,8 @@
             <v-container class="pa-3">
                 <v-row no-gutters>
                     <v-col cols="6">
-                        <div class="caption grey--text">{{item.category || 'Без категории'}}</div>
-                        <div>{{item.name}}</div>
+                        <div class="caption blue-grey--text text--lighten-1">{{item.category || 'Без категории'}}</div>
+                        <div class="blue-grey--text text--darken-2">{{item.name}}</div>
                     </v-col>
 
                     <v-col
@@ -19,7 +19,7 @@
                             :class="hover ? 'd-flex justify-end align-center' : ''"
                     >
                         <div v-show="!hover">
-                            <div class="caption grey--text">{{formatDate(item.date)}}</div>
+                            <div class="caption blue-grey--text text--lighten-1">{{formatDate(item.date)}}</div>
                             <div :class="`${valueColor}--text`">
                                 {{valuePrefix}}{{item.value}} руб.
                             </div>

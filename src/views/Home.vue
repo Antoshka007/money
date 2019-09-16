@@ -2,9 +2,9 @@
     <div>
         <div v-if="!isLoggedIn" class="custom-background">
             <div class="custom-background__inner">
-                <h1 class="text-center display-1 mb-10">Добро пожаловать в MyMoney!</h1>
+                <h1 class="text-center display-1 mb-10 blue-grey--text text--darken-2">Добро пожаловать в MyMoney!</h1>
 
-                <p class="custom-description">
+                <p class="custom-description blue-grey--text text--darken-4">
                     Данный сервис поможет Вам в управлении личными финансами. Записывайте свои доходы
                     и расходы, распределяя их по категориям, а MyMoney наглядным образом визуализирует все данные,
                     чтобы вы хорошо понимали своё финансовое положение.
@@ -15,7 +15,7 @@
         <v-container v-if="isLoggedIn">
             <v-row>
                 <v-col cols="12">
-                    <p class="headline text-center grey--text">
+                    <p class="headline text-center blue-grey--text text--darken-2">
                         Текущий месяц:
                         <span
                                 :class="{
@@ -30,7 +30,7 @@
                 </v-col>
 
                 <v-col cols="6">
-                    <h2 class="title text-center grey--text">Доходы</h2>
+                    <h2 class="title text-center blue-grey--text text--darken-2">Доходы</h2>
 
                     <Form
                             :onSubmit="onSubmitIncome"
@@ -39,7 +39,7 @@
                             :categories="incomeCategories"
                     />
 
-                    <p class="grey--text custom-month-panel">
+                    <p class="blue-grey--text text--lighten-1 custom-month-panel">
                         За текущий месяц вы заработали:
                         <span class="green--text ml-1">+{{incomeSum}} руб.</span>
 
@@ -79,7 +79,7 @@
                 </v-col>
 
                 <v-col cols="6">
-                    <h2 class="title text-center grey--text">Расходы</h2>
+                    <h2 class="title text-center blue-grey--text text--darken-2">Расходы</h2>
 
                     <Form
                             :onSubmit="onSubmitOutcome"
@@ -88,7 +88,7 @@
                             :categories="outcomeCategories"
                     />
 
-                    <p class="grey--text custom-month-panel">
+                    <p class="blue-grey--text text--lighten-1 custom-month-panel">
                         За текущий месяц вы потратили:
                         <span class="red--text ml-1">-{{outcomeSum}} руб.</span>
 
