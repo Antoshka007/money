@@ -79,7 +79,7 @@
             <div v-if="isLoggedIn" class="blue-grey--text text--lighten-4">
                 {{this.userEmail}}
 
-                <v-btn text @click="logoutClickHandler" class="blue-grey--text text--lighten-4">
+                <v-btn text @click="logoutClickHandler" class="ml-1 blue-grey--text text--lighten-4">
                     Выйти
                     <v-icon right>mdi-logout-variant</v-icon>
                 </v-btn>
