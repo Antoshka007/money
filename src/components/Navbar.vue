@@ -33,53 +33,11 @@
                     </v-tab>
 
                     <v-tab-item value="tab-login">
-                        <v-form v-model="isLoginValid" @submit.prevent="loginSubmitHandler">
-                            <v-container>
-                                <v-text-field
-                                        v-model="loginEmail"
-                                        label="Email"
-                                        :rules="inputRules"
-                                ></v-text-field>
-
-                                <v-text-field
-                                        type="password"
-                                        v-model="loginPassword"
-                                        label="Пароль"
-                                        :rules="inputRules"
-                                ></v-text-field>
-
-                                <div class="text-right">
-                                    <v-btn text class="blue--text" type="submit" :loading="isLoginLoading">
-                                        Войти
-                                    </v-btn>
-                                </div>
-                            </v-container>
-                        </v-form>
+                        <Login :onLogin="onLogin" />
                     </v-tab-item>
 
                     <v-tab-item value="tab-reg">
-                        <v-form v-model="isRegValid" @submit.prevent="regSubmitHandler">
-                            <v-container>
-                                <v-text-field
-                                        v-model="regEmail"
-                                        label="Email"
-                                        :rules="inputRules"
-                                ></v-text-field>
-
-                                <v-text-field
-                                        type="password"
-                                        v-model="regPassword"
-                                        label="Пароль"
-                                        :rules="inputRules"
-                                ></v-text-field>
-
-                                <div class="text-right">
-                                    <v-btn text class="blue--text" type="submit" :loading="isRegLoading">
-                                        Отправить
-                                    </v-btn>
-                                </div>
-                            </v-container>
-                        </v-form>
+                        <SignIn :onSignIn="onSignIn"/>
                     </v-tab-item>
                 </v-tabs>
             </v-dialog>
@@ -98,59 +56,26 @@
 
 <script>
     import Info from '@/components/Info';
+    import Login from '@/components/Login';
+    import SignIn from '@/components/SignIn';
     import firebase from 'firebase/app';
 	import 'firebase/auth';
 
     export default {
-    	components: { Info },
+    	components: { Info, Login, SignIn },
         data() {
         	return {
         		isLoggedIn: false,
                 userEmail: null,
         	    isDialogOpen: false,
-                isLoginValid: false,
-                loginEmail: '',
-                loginPassword: '',
-                isLoginLoading: false,
-                isRegValid: false,
-                regEmail: '',
-                regPassword: '',
-                isRegLoading: false,
-                inputRules: [
-                    v => !!v || 'Обязательно'
-                ],
             };
         },
         methods: {
-        	loginSubmitHandler() {
-                if (this.isLoginValid) {
-                	this.isLoginLoading = true;
-
-					firebase.auth().signInWithEmailAndPassword(this.loginEmail, this.loginPassword)
-						.then(user => {
-							this.isLoginLoading = false;
-							this.isDialogOpen = false;
-							console.log('Пользователь авторизован!');
-						}, err => {
-							this.isLoginLoading = false;
-							console.error(err.message);
-						});
-                }
+        	onLogin() {
+                this.isDialogOpen = false;
             },
-            regSubmitHandler() {
-				if (this.isRegValid) {
-					this.isRegLoading = true;
-
-					firebase.auth().createUserWithEmailAndPassword(this.regEmail, this.regPassword)
-                        .then(user => {
-                        	this.isRegLoading = false;
-                        	this.isDialogOpen = false;
-						    console.log('Регистрация прошла успешно');
-                        }, err => {
-							this.isRegLoading = false;
-                        	console.error(err.message);
-                        });
-				}
+            onSignIn() {
+        	    this.isDialogOpen = false;
             },
             logoutClickHandler() {
         		firebase.auth().signOut().then(() => {
