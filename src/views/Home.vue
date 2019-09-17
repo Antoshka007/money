@@ -215,13 +215,14 @@
 				let data = [];
 
 				items.forEach((item) => {
-					const categoryData = data.find(v => v.category === item.category);
+					const itemCategory = item.category || 'Другое';
+					const categoryData = data.find(v => v.category === itemCategory);
 
 					if (categoryData) {
 						categoryData.sum += item.value;
 					} else {
 						data.push({
-							category: item.category,
+							category: itemCategory,
 							color: this.getCategoryColor(type, item.category),
 							sum: item.value
 						});
