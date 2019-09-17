@@ -7,47 +7,45 @@
                 <v-col cols="12">
                     <p class="headline text-center blue-grey--text text--darken-2 mt-10">
                         Текущий месяц:
-                        <span
-                                :class="{
-                            'grey--text': incomeSum === outcomeSum,
-                            'green--text': incomeSum > outcomeSum,
-                            'red--text': outcomeSum > incomeSum
-                        }"
+                        <span :class="{
+                                'grey--text': incomeSum === outcomeSum,
+                                'green--text': incomeSum > outcomeSum,
+                                'red--text': outcomeSum > incomeSum
+                            }"
                         >
-                    <span v-show="incomeSum > outcomeSum">+</span>{{incomeSum - outcomeSum}} руб.
-                </span>
+                            <span v-show="incomeSum > outcomeSum">+</span>{{incomeSum - outcomeSum}} руб.
+                        </span>
                     </p>
                 </v-col>
 
                 <v-col cols="6">
                     <h2 class="title text-center blue-grey--text text--darken-2">Доходы</h2>
 
-                    <Form
-                            :onSubmit="onSubmitIncome"
-                            nameLabel="Я получил"
-                            valueLabel="В размере"
-                            :categories="incomeCategories"
+                    <Form :onSubmit="onSubmitIncome" :categories="incomeCategories"
+                          nameLabel="Название" valueLabel="Сумма"
                     />
 
                     <p class="blue-grey--text text--lighten-1 custom-month-panel">
                         За текущий месяц вы заработали:
-                        <span class="green--text ml-1">+{{incomeSum}} руб.</span>
+                        <span class="ml-1"
+                              :class="{'green--text': incomeSum > 0 }"
+                        >
+                            {{ incomeSum > 0 ? '+' : '' }}{{incomeSum}} руб.
+                        </span>
 
-                        <v-btn
-                                class="custom-month-panel__btn"
+                        <v-btn class="custom-month-panel__btn"
                                 text
                                 icon
-                                v-show="!isIncomeChartShown"
+                                v-show="!isIncomeChartShown && incomeSum > 0"
                                 @click="isIncomeChartShown = true"
                         >
                             <v-icon>mdi-chevron-down</v-icon>
                         </v-btn>
 
-                        <v-btn
-                                class="custom-month-panel__btn"
+                        <v-btn class="custom-month-panel__btn"
                                 text
                                 icon
-                                v-show="isIncomeChartShown"
+                                v-show="isIncomeChartShown && incomeSum > 0"
                                 @click="isIncomeChartShown = false"
                         >
                             <v-icon>mdi-chevron-up</v-icon>
@@ -58,13 +56,12 @@
                         <Pie :chartData="incomeChartData"/>
                     </div>
 
-                    <Item
-                            v-for="item in income"
-                            :key="item.id"
-                            valuePrefix="+"
-                            valueColor="green"
-                            :item="item"
-                            :onRemove="onRemoveIncome"
+                    <Item v-for="item in income"
+                          :key="item.id"
+                          valuePrefix="+"
+                          valueColor="green"
+                          :item="item"
+                          :onRemove="onRemoveIncome"
                     />
                 </v-col>
 
@@ -73,31 +70,33 @@
 
                     <Form
                             :onSubmit="onSubmitOutcome"
-                            nameLabel="Я приобрёл"
-                            valueLabel="Потратил"
+                            nameLabel="Название"
+                            valueLabel="Сумма"
                             :categories="outcomeCategories"
                     />
 
                     <p class="blue-grey--text text--lighten-1 custom-month-panel">
                         За текущий месяц вы потратили:
-                        <span class="red--text ml-1">-{{outcomeSum}} руб.</span>
+                        <span class="ml-1"
+                            :class="{ 'red--text': outcomeSum > 0 }"
+                        >
+                            {{outcomeSum > 0 ? '-' : ''}}{{outcomeSum}} руб.
+                        </span>
 
-                        <v-btn
-                                class="custom-month-panel__btn"
-                                text
-                                icon
-                                v-show="!isOutcomeChartShown"
-                                @click="isOutcomeChartShown = true"
+                        <v-btn class="custom-month-panel__btn"
+                               text
+                               icon
+                               v-show="!isOutcomeChartShown && outcomeSum > 0"
+                               @click="isOutcomeChartShown = true"
                         >
                             <v-icon>mdi-chevron-down</v-icon>
                         </v-btn>
 
-                        <v-btn
-                                class="custom-month-panel__btn"
-                                text
-                                icon
-                                v-show="isOutcomeChartShown"
-                                @click="isOutcomeChartShown = false"
+                        <v-btn class="custom-month-panel__btn"
+                               text
+                               icon
+                               v-show="isOutcomeChartShown && outcomeSum > 0"
+                               @click="isOutcomeChartShown = false"
                         >
                             <v-icon>mdi-chevron-up</v-icon>
                         </v-btn>
