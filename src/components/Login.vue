@@ -1,6 +1,10 @@
 <template>
     <v-form v-model="isValid" @submit.prevent="formSubmitHandler">
         <v-container>
+            <p v-show="isError" class="text-center red--text">
+                {{errorText}}
+            </p>
+
             <v-text-field
                     type="email"
                     v-model="email"
@@ -34,6 +38,8 @@
             return {
                 isValid: false,
                 isLoading: false,
+                isError: false,
+                errorText: '',
                 email: '',
                 password: '',
 				inputRules: [
@@ -49,10 +55,19 @@
 					firebase.auth().signInWithEmailAndPassword(this.email, this.password)
 						.then(() => {
 							this.isLoading = false;
+							this.isError = false;
 							this.onLogin();
 						}, err => {
+							const errors = {
+                                'auth/invalid-email': 'Неверный email.',
+                                'auth/user-disabled': 'Пользователь с таким email заблокирован.',
+                                'auth/user-not-found': 'Пользователь с таким email не зарегистрирован.',
+                                'auth/wrong-password': 'Неверный пароль.',
+                            };
+
 							this.isLoading = false;
-							console.error(err.message);
+							this.errorText = errors[err.code] || 'Что-то пошло не так.';
+							this.isError = true;
 						});
 				}
             }
