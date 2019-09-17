@@ -33,20 +33,16 @@
                             {{ incomeSum > 0 ? '+' : '' }}{{incomeSum}} руб.
                         </span>
 
-                        <v-btn class="custom-month-panel__btn"
-                                text
-                                icon
-                                v-show="!isIncomeChartShown && incomeSum > 0"
-                                @click="isIncomeChartShown = true"
+                        <v-btn class="custom-month-panel__btn" text icon
+                               v-show="!isIncomeChartShown && incomeSum > 0"
+                               @click="isIncomeChartShown = true"
                         >
                             <v-icon>mdi-chevron-down</v-icon>
                         </v-btn>
 
-                        <v-btn class="custom-month-panel__btn"
-                                text
-                                icon
-                                v-show="isIncomeChartShown && incomeSum > 0"
-                                @click="isIncomeChartShown = false"
+                        <v-btn class="custom-month-panel__btn" text icon
+                               v-show="isIncomeChartShown && incomeSum > 0"
+                               @click="isIncomeChartShown = false"
                         >
                             <v-icon>mdi-chevron-up</v-icon>
                         </v-btn>
@@ -56,23 +52,17 @@
                         <Pie :chartData="incomeChartData"/>
                     </div>
 
-                    <Item v-for="item in income"
-                          :key="item.id"
-                          valuePrefix="+"
-                          valueColor="green"
-                          :item="item"
-                          :onRemove="onRemoveIncome"
+                    <Item v-for="item in income" :key="item.id"
+                          valuePrefix="+" valueColor="green"
+                          :item="item" :onRemove="onRemoveIncome"
                     />
                 </v-col>
 
                 <v-col cols="6">
                     <h2 class="title text-center blue-grey--text text--darken-2">Расходы</h2>
 
-                    <Form
-                            :onSubmit="onSubmitOutcome"
-                            nameLabel="Название"
-                            valueLabel="Сумма"
-                            :categories="outcomeCategories"
+                    <Form :onSubmit="onSubmitOutcome" :categories="outcomeCategories"
+                          nameLabel="Название" valueLabel="Сумма"
                     />
 
                     <p class="blue-grey--text text--lighten-1 custom-month-panel">
@@ -84,8 +74,7 @@
                         </span>
 
                         <v-btn class="custom-month-panel__btn"
-                               text
-                               icon
+                               text icon
                                v-show="!isOutcomeChartShown && outcomeSum > 0"
                                @click="isOutcomeChartShown = true"
                         >
@@ -93,8 +82,7 @@
                         </v-btn>
 
                         <v-btn class="custom-month-panel__btn"
-                               text
-                               icon
+                               text icon
                                v-show="isOutcomeChartShown && outcomeSum > 0"
                                @click="isOutcomeChartShown = false"
                         >
@@ -106,13 +94,9 @@
                         <Pie :chartData="outcomeChartData"/>
                     </div>
 
-                    <Item
-                            v-for="item in outcome"
-                            :key="item.id"
-                            valuePrefix="-"
-                            valueColor="red"
-                            :item="item"
-                            :onRemove="onRemoveOutcome"
+                    <Item v-for="item in outcome" :key="item.id"
+                          valuePrefix="-" valueColor="red"
+                          :item="item" :onRemove="onRemoveOutcome"
                     />
                 </v-col>
             </v-row>
