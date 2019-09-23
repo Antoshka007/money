@@ -70,7 +70,7 @@
 					this.onSubmit({
 						name: name,
 						value: value,
-						category: this.category
+						category: this.category || ''
 					});
 
 					this.$refs.name.focus();
