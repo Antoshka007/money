@@ -5,17 +5,7 @@
         <v-container v-if="isLoggedIn">
             <v-row>
                 <v-col cols="12">
-                    <p class="headline text-center blue-grey--text text--darken-2 mt-10">
-                        Текущий месяц:
-                        <span :class="{
-                                'grey--text': incomeSum === outcomeSum,
-                                'green--text': incomeSum > outcomeSum,
-                                'red--text': outcomeSum > incomeSum
-                            }"
-                        >
-                            <span v-show="incomeSum > outcomeSum">+</span>{{incomeSum - outcomeSum}} руб.
-                        </span>
-                    </p>
+                    <Result :sum="incomeSum - outcomeSum" />
                 </v-col>
 
                 <v-col cols="6">
@@ -112,11 +102,12 @@
 	import Item from '@/components/Item';
 	import Pie from '@/components/Pie';
 	import Welcome from '@/components/Welcome';
+	import Result from '@/components/Result';
 
 	const db = firebase.firestore();
 
 	export default {
-		components: { Pie, Form, Item, Welcome },
+		components: { Pie, Form, Item, Welcome, Result },
 		data() {
 			return {
 				isLoggedIn: false,
