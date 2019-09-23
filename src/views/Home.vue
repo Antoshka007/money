@@ -15,28 +15,11 @@
                           nameLabel="Название" valueLabel="Сумма"
                     />
 
-                    <p class="blue-grey--text text--lighten-1 custom-month-panel">
-                        За текущий месяц вы заработали:
-                        <span class="ml-1"
-                              :class="{'green--text': incomeSum > 0 }"
-                        >
-                            {{ incomeSum > 0 ? '+' : '' }}{{incomeSum}} руб.
-                        </span>
-
-                        <v-btn class="custom-month-panel__btn" text icon
-                               v-show="!isIncomeChartShown && incomeSum > 0"
-                               @click="isIncomeChartShown = true"
-                        >
-                            <v-icon>mdi-chevron-down</v-icon>
-                        </v-btn>
-
-                        <v-btn class="custom-month-panel__btn" text icon
-                               v-show="isIncomeChartShown && incomeSum > 0"
-                               @click="isIncomeChartShown = false"
-                        >
-                            <v-icon>mdi-chevron-up</v-icon>
-                        </v-btn>
-                    </p>
+                    <MonthInfo :isIncome="true"
+                               :sum="incomeSum"
+                               :isChartShown="isIncomeChartShown"
+                               :onToggle="onToggleIncomeChart"
+                    />
 
                     <div class="mb-4 custom-chart" v-if="isIncomeChartShown">
                         <Pie :chartData="incomeChartData"/>
@@ -55,30 +38,11 @@
                           nameLabel="Название" valueLabel="Сумма"
                     />
 
-                    <p class="blue-grey--text text--lighten-1 custom-month-panel">
-                        За текущий месяц вы потратили:
-                        <span class="ml-1"
-                            :class="{ 'red--text': outcomeSum > 0 }"
-                        >
-                            {{outcomeSum > 0 ? '-' : ''}}{{outcomeSum}} руб.
-                        </span>
-
-                        <v-btn class="custom-month-panel__btn"
-                               text icon
-                               v-show="!isOutcomeChartShown && outcomeSum > 0"
-                               @click="isOutcomeChartShown = true"
-                        >
-                            <v-icon>mdi-chevron-down</v-icon>
-                        </v-btn>
-
-                        <v-btn class="custom-month-panel__btn"
-                               text icon
-                               v-show="isOutcomeChartShown && outcomeSum > 0"
-                               @click="isOutcomeChartShown = false"
-                        >
-                            <v-icon>mdi-chevron-up</v-icon>
-                        </v-btn>
-                    </p>
+                    <MonthInfo :isIncome="false"
+                               :sum="outcomeSum"
+                               :isChartShown="isOutcomeChartShown"
+                               :onToggle="onToggleOutcomeChart"
+                    />
 
                     <div class="mb-4 custom-chart" v-if="isOutcomeChartShown">
                         <Pie :chartData="outcomeChartData"/>
@@ -103,11 +67,12 @@
 	import Pie from '@/components/Pie';
 	import Welcome from '@/components/Welcome';
 	import Result from '@/components/Result';
+	import MonthInfo from "../components/MonthInfo";
 
 	const db = firebase.firestore();
 
 	export default {
-		components: { Pie, Form, Item, Welcome, Result },
+		components: { MonthInfo, Pie, Form, Item, Welcome, Result },
 		data() {
 			return {
 				isLoggedIn: false,
@@ -172,6 +137,12 @@
 				}).catch(() => {
 					console.error('Не удалось удалить расход!')
 				});
+			},
+            onToggleIncomeChart() {
+			    this.isIncomeChartShown = !this.isIncomeChartShown;
+            },
+			onToggleOutcomeChart() {
+				this.isOutcomeChartShown = !this.isOutcomeChartShown;
 			},
 			getCategoryColor(type, category) {
 				if (type === 'income') {
@@ -332,15 +303,6 @@
         margin-left: auto;
         margin-right: auto;
         max-width: 300px;
-    }
-
-    .custom-month-panel {
-        display: flex;
-    }
-
-    .custom-month-panel__btn {
-        margin-left: auto;
-        margin-top: -6px;
     }
 
     @media screen and (min-width: 960px) {
