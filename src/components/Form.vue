@@ -46,7 +46,12 @@
 
 <script>
 	export default {
-		props: ['onSubmit', 'nameLabel', 'valueLabel', 'categories'],
+        props: {
+		    onSubmit: Function,
+            nameLabel: String,
+            valueLabel: String,
+            categories: Array,
+        },
 		data() {
 			return {
 				isValid: false,

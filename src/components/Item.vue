@@ -39,15 +39,20 @@
 
 <script>
 	export default {
-		props: ['valuePrefix', 'valueColor', 'item', 'onRemove'],
-        methods: {
+		props: {
+			valuePrefix: String,
+            valueColor: String,
+            item: Object,
+            onRemove: Function,
+        },
+		methods: {
 			removeClickHandler() {
-                this.onRemove(this.item.id);
-            },
-            formatDate(date) {
+				this.onRemove(this.item.id);
+			},
+			formatDate(date) {
 				const [year, month, day] = date.split('-');
 				return [day, month, year].join('.');
-            }
-        }
+			}
+		}
 	};
 </script>

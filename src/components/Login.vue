@@ -33,7 +33,7 @@
 	import 'firebase/auth';
 
     export default {
-    	props: ['onLogin'],
+    	props: { onLogin: Function },
         data() {
             return {
                 isValid: false,
