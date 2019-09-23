@@ -105,38 +105,60 @@
 		},
 		methods: {
 			onSubmitIncome(income) {
-				db.collection(`users/${this.userID}/incomes`).add({
-                    ...income,
+				const obj = {
+					...income,
 					date: new Date().toISOString().substr(0, 10),
-                }).then(() => {
-					console.log('Доход успешно добавлен!');
-				}).catch(() => {
-					console.error('Не удалось добавить доход!');
-                });
+                };
+
+				db.collection(`users/${this.userID}/incomes`).add(obj)
+                    .then(doc => {
+                        this.income.unshift({
+                            ...obj,
+                            id: doc.id
+                        });
+                    }).catch(err => {
+                        console.error(err);
+                    });
 			},
 			onSubmitOutcome(outcome) {
-				db.collection(`users/${this.userID}/outcomes`).add({
+				const obj = {
 					...outcome,
 					date: new Date().toISOString().substr(0, 10),
-				}).then(() => {
-					console.log('Расход успешно добавлен!');
-				}).catch(() => {
-					console.error('Не удалось добавить расход!');
-				});
+				};
+
+				db.collection(`users/${this.userID}/outcomes`).add(obj)
+                    .then(doc => {
+						this.outcome.unshift({
+							...obj,
+							id: doc.id
+						});
+                    }).catch(err => {
+                        console.error(err);
+                    });
 			},
 			onRemoveIncome(id) {
-				db.collection(`users/${this.userID}/incomes`).doc(id).delete().then(() => {
-					console.log('Доход успешно удалён!');
-				}).catch(() => {
-					console.error('Не удалось удалить доход!')
-				});
+				db.collection(`users/${this.userID}/incomes`).doc(id).delete()
+                    .then(() => {
+                        const index = this.income.findIndex(item => item.id === id);
+
+                        if (index !== -1) {
+                        	this.income.splice(index, 1);
+                        }
+                    }).catch(err => {
+                        console.error(err);
+                    });
 			},
 			onRemoveOutcome(id) {
-				db.collection(`users/${this.userID}/outcomes`).doc(id).delete().then(() => {
-					console.log('Расход успешно удалён!');
-				}).catch(() => {
-					console.error('Не удалось удалить расход!')
-				});
+				db.collection(`users/${this.userID}/outcomes`).doc(id).delete()
+                    .then(() => {
+						const index = this.outcome.findIndex(item => item.id === id);
+
+						if (index !== -1) {
+							this.outcome.splice(index, 1);
+						}
+                    }).catch(err => {
+                        console.error(err)
+                    });
 			},
             onToggleIncomeChart() {
 			    this.isIncomeChartShown = !this.isIncomeChartShown;
@@ -207,59 +229,35 @@
 				if (user) {
 					this.userID = user.uid;
 
-					db.collection(`users/${this.userID}/incomes`).onSnapshot((res) => {
-						const changes = res.docChanges();
-
-						changes.forEach(change => {
-							if (change.type === 'added') {
+					db.collection(`users/${this.userID}/incomes`).get()
+                        .then(data => {
+                        	data.docs.forEach(doc => {
 								const income = {
-									...change.doc.data(),
-									id: change.doc.id,
+									...doc.data(),
+									id: doc.id,
 								};
 
-								if (change.newIndex) {
-									this.income.push(income);
-								} else {
-									this.income.unshift(income);
-								}
-							} else if (change.type === 'removed') {
-								let index = this.income.findIndex(income => {
-									return (income.id === change.doc.id);
-								});
+                        		this.income.push(income);
+                            });
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        });
 
-								if (index !== -1) {
-									this.income.splice(index, 1);
-								}
-							}
-						});
-					});
-
-					db.collection(`users/${this.userID}/outcomes`).onSnapshot((res) => {
-						const changes = res.docChanges();
-
-						changes.forEach(change => {
-							if (change.type === 'added') {
+					db.collection(`users/${this.userID}/outcomes`).get()
+						.then(data => {
+							data.docs.forEach(doc => {
 								const outcome = {
-									...change.doc.data(),
-									id: change.doc.id,
+									...doc.data(),
+									id: doc.id,
 								};
 
-								if (change.newIndex) {
-									this.outcome.push(outcome);
-								} else {
-									this.outcome.unshift(outcome);
-								}
-							} else if (change.type === 'removed') {
-								let index = this.outcome.findIndex(outcome => {
-									return (outcome.id === change.doc.id);
-								});
-
-								if (index !== -1) {
-									this.outcome.splice(index, 1);
-								}
-							}
+								this.outcome.push(outcome);
+							});
+						})
+						.catch(err => {
+							console.error(err);
 						});
-					});
                 } else {
 					this.income = [];
 					this.outcome = [];
